@@ -1,0 +1,9 @@
+---
+kubernetes_packages:
+  - vim
+  - docker.io
+  - kubelet=1.20.0-00
+  - kubeadm=1.20.0-00
+  - kubernetes-cni
+kubernetes_apiserver_advertise_address: "192.168.14.10"
+kubernetes_pod_network_cidr: "10.244.0.0/16"

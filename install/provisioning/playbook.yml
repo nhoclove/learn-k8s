@@ -1,0 +1,4 @@
+---
+- import_playbook: prerequisites.yml
+- import_playbook: setup_master.yml
+- import_playbook: setup_workers.yml

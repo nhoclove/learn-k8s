@@ -1,0 +1,31 @@
+---
+- hosts: kubernetes
+  become: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Disable swap
+      become: true
+      command: "{{ item }}"
+      with_items:
+      - swapoff -a
+      - sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+    - name: Add the Google signing key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg 
+        state: present
+
+    - name: Add the k8s APT repo
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+        filename: 'kubernetes'
+
+    - name: Install k8s packages
+      apt:
+        name: "{{ kubernetes_packages }}"
+        state: present
+        update_cache: true
+        force: yes

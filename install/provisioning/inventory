@@ -1,0 +1,15 @@
+[master]
+master ansible_host=192.168.14.10 kubernetes_role=master
+
+[workers]
+worker-1 ansible_host=192.168.14.11 kubernetes_role=node
+worker-2 ansible_host=192.168.14.12 kubernetes_role=node
+
+[kubernetes:children]
+master
+workers
+
+[kubernetes:vars]
+ansible_user=vagrant
+ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
+ansible_python_interpreter=/usr/bin/python3

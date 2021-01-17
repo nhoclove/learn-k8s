@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+hosts = [
+    { :name => "master",   :ip => "192.168.14.10" },
+    { :name => "worker-1", :ip => "192.168.14.11" },
+    { :name => "worker-2", :ip => "192.168.14.12" },
+]
+
+Vagrant.configure("2") do |config|
+    # always use Vagrants insecure key
+    config.ssh.insert_key = false
+    # forward ssh agent to easily ssh into the different machines
+    config.ssh.forward_agent = true
+    check_guest_additions = false
+    functional_vboxsf = false
+    config.vm.box = "bento/ubuntu-16.04"
+    
+    hosts.each do |host|
+        config.vm.define host[:name] do |machine|
+            machine.vm.hostname = host[:name]
+            machine.vm.network :private_network, ip: host[:ip]
+            machine.vm.provider :virtualbox do |v|
+                v.name = host[:name]
+                v.cpus = 2
+                v.memory = 1800
+            end
+
+            # Provision using Ansible
+            if host[:name] == "worker-2"
+                machine.vm.provision :ansible do |ansible|
+                    ansible.playbook = "provisioning/playbook.yml"
+                    ansible.inventory_path = "provisioning/inventory"
+                    ansible.limit = "all"
+                end
+            end
+        end
+    end
+end
