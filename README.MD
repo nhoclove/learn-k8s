@@ -1,5 +1,10 @@
 # How to setup
 
+## Prerequisites
+- [Virtualbox](https://www.virtualbox.org/)
+- [Ansible](https://www.ansible.com/)
+- [Vagrant](https://www.vagrantup.com/)
+
 ## Basic configuration for each VM [docs](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#before-you-begin):
 - Box: bento/ubuntu-16.04
 - CPU: 2 cores
@@ -27,3 +32,6 @@
 
 ## Troubleshoot:
 - https://medium.com/@joatmon08/playing-with-kubeadm-in-vagrant-machines-part-2-bac431095706
+
+## TODO
+- Fix kubelet IP problem in woker nodes
