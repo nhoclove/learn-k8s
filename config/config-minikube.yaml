@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Config
+preferences: {}
+
+clusters:
+- cluster:
+  name: minikube
+
+users:
+- name: minikube
+
+contexts:
+- context:
+  name: minikube
