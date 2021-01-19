@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Config
+preferences: {}
+
+clusters:
+- cluster:
+  name: dev-cluster
+
+users:
+- name: kubernetes-admin
+
+contexts:
+- context:
+  name: kubernetes-admin@dev-cluster
