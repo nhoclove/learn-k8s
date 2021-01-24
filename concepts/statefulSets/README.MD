@@ -11,3 +11,4 @@ user details(profile, preferences, actions...)
 ## 3. References:
 - https://www.xenonstack.com/insights/stateful-and-stateless-applications/
 - https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
+- https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/
