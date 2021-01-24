@@ -7,6 +7,11 @@ user details(profile, preferences, actions...)
 - Stable, persistent storage
 - Ordered, graceful deployment and scaling
 - Ordered, automated rolling updates
+## 3. Scaling a StatefulSet
+### 1. Scaling Up
+`$ kubectl scale sts web --replicas=5`
+### 2. Scaling Down
+`$ kubectl patch sts web -p '{"spec":{"replicas":3}}'`
 
 ## 3. References:
 - https://www.xenonstack.com/insights/stateful-and-stateless-applications/
