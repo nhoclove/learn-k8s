@@ -12,8 +12,7 @@ user details(profile, preferences, actions...)
 `$ kubectl scale sts web --replicas=5`
 ### 2. Scaling Down
 `$ kubectl patch sts web -p '{"spec":{"replicas":3}}'`
-
-## 3. References:
+## 4. References:
 - https://www.xenonstack.com/insights/stateful-and-stateless-applications/
 - https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
 - https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/
