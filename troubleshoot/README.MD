@@ -117,6 +117,43 @@ it seems suspicious here
 might have used more than what It was allocated so OOM was triggered.
 If that's the case then only cassandra Container was killed not the whole minikube program.
 But according to [this](https://github.com/docker/for-linux/issues/1001) it can happen
+
+**Show system process tree**
+`$ pstree -n`
+```
+├─containerd─┬─16*[{containerd}]
+    │        └─containerd-shim─┬─10*[{containerd-shim}]
+    │                          └─systemd─┬─systemd-journal
+    │                                    ├─containerd───19*[{containerd}]
+    │                                    ├─sshd
+    │                                    ├─dockerd───50*[{dockerd}]
+    │                                    ├─kubelet───19*[{kubelet}]
+    │                                    ├─2*[containerd-shim─┬─13*[{containerd-shim}]]
+    │                                    │                    └─pause]
+    │                                    ├─3*[containerd-shim─┬─13*[{containerd-shim}]]
+    │                                    │                    └─pause]
+    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
+    │                                    │                 └─etcd───14*[{etcd}]
+    │                                    ├─containerd-shim─┬─11*[{containerd-shim}]
+    │                                    │                 └─kube-scheduler───8*[{kube-scheduler}]
+    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
+    │                                    │                 └─kube-controller───7*[{kube-controller}]
+    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
+    │                                    │                 └─kube-apiserver───10*[{kube-apiserver}]
+    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
+    │                                    │                 └─pause
+    │                                    ├─containerd-shim─┬─14*[{containerd-shim}]
+    │                                    │                 └─pause
+    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
+    │                                    │                 └─coredns───9*[{coredns}]
+    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
+    │                                    │                 └─kube-proxy───7*[{kube-proxy}]
+    │                                    └─containerd-shim─┬─12*[{containerd-shim}]
+    │                                                      └─storage-provisi───5*[{storage-provisi}]
+
+```
+We can see that there is one `containerd` process then under it there is a `systemd` process
+then child processes such as kube-apiserver, coredns, kube-scheduler.
 ### References:
 - https://github.com/docker/for-linux/issues/1001
 - https://docs.docker.com/config/containers/resource_constraints/#--kernel-memory-details
