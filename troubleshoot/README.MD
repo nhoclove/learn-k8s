@@ -97,10 +97,9 @@ From minikube documentation. The system required for minikube as follows:
 - 20GB of free disk space
 - Internet connection
 - Container or virtual machine manager, such as: Docker, Hyperkit, Hyper-V, KVM, Parallels, Podman, VirtualBox, or VMWare
-> My system can fulfil all of these requirements above. Why I have OOM ?
 
 > I just review my cassandra-statefulset and see that for each Pod I request
-> 1Gi of memory and 500m of CPU, currently that resource starts 3 replicas
+> 1Gi of memory and 500m of CPU, currently this statefulset starts 3 replicas
 > which may consume up to 3Gi of memory
 ```
     resources:
@@ -111,13 +110,6 @@ From minikube documentation. The system required for minikube as follows:
         cpu: "500m"
         memory: 1Gi
 ```
-it seems suspicious here
-**Let's dig deeper about OOM**
-- Suspicion: I set memory limit for each cassandra Container can use up to 1Gi but cassandra Container somehow
-might have used more than what It was allocated so OOM was triggered.
-If that's the case then only cassandra Container was killed not the whole minikube program.
-But according to [this](https://github.com/docker/for-linux/issues/1001) it can happen
-
 **Show system process tree**
 `$ pstree -n`
 ```
