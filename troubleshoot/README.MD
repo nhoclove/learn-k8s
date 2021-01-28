@@ -146,6 +146,52 @@ From minikube documentation. The system required for minikube as follows:
 ```
 We can see that there is one `containerd` process then under it there is a `systemd` process
 then child processes such as kube-apiserver, coredns, kube-scheduler.
+Recall from the logs when OOM occurred OOM Killer killed the `systemd` process, since
+`systemd` was a init process so all of its child processes was killed as well.
+**Let's proof it**
+1. Start minikube `$ minikube start`
+
+2. Check the system process tree: `pstree -n`
+```
+systemd─┬─systemd-journal
+        ├─ ...
+        └─containerd─┬─13*[{containerd}]
+                │    └─containerd-shim─┬─9*[{containerd-shim}]
+                │                      └─systemd─┬─systemd-journal
+                │                                ├─containerd───14*[{containerd}]
+                │                                ├─sshd
+                │                                ├─dockerd───35*[{dockerd}]
+                │                                ├─kubelet───14*[{kubelet}]
+                │                                ├─containerd-shim─┬─14*[{containerd-shim}]
+                │                                │                 └─pause
+                │                                ├─2*[containerd-shim─┬─11*[{containerd-shim}]]
+                │                                │                    └─pause]
+                │                                ├─2*[containerd-shim─┬─12*[{containerd-shim}]]
+                │                                │                    └─pause]
+                │                                ├─containerd-shim─┬─12*[{containerd-shim}]
+                │                                │                 └─etcd───14*[{etcd}]
+                │                                ├─containerd-shim─┬─11*[{containerd-shim}]
+                │                                │                 └─kube-apiserver───9*[{kube-apiserver}]
+                │                                ├─containerd-shim─┬─13*[{containerd-shim}]
+                │                                │                 └─kube-scheduler───9*[{kube-scheduler}]
+                │                                ├─containerd-shim─┬─13*[{containerd-shim}]
+                │                                │                 └─kube-controller───7*[{kube-controller}]
+                │                                ├─containerd-shim─┬─12*[{containerd-shim}]
+                │                                │                 └─pause
+                │                                ├─containerd-shim─┬─13*[{containerd-shim}]
+                │                                │                 └─pause
+                │                                ├─containerd-shim─┬─12*[{containerd-shim}]
+                │                                │                 └─kube-proxy───7*[{kube-proxy}]
+                │                                └─containerd-shim─┬─12*[{containerd-shim}]
+                │                                                  └─coredns───9*[{coredns}]
+```
+3. Kill `systemd` process under `containerd-shim` process `$ sudo kill -9 systemd_pid`
+4. Check the system process tree again `$ pstree -n`
+```
+systemd─┬─systemd-journal
+        ├─ ...
+        └─containerd───13*[{containerd}]
+```
 ### References:
 - https://github.com/docker/for-linux/issues/1001
 - https://docs.docker.com/config/containers/resource_constraints/#--kernel-memory-details
