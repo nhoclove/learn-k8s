@@ -113,35 +113,37 @@ From minikube documentation. The system required for minikube as follows:
 **Show system process tree**
 `$ pstree -n`
 ```
-├─containerd─┬─16*[{containerd}]
-    │        └─containerd-shim─┬─10*[{containerd-shim}]
-    │                          └─systemd─┬─systemd-journal
-    │                                    ├─containerd───19*[{containerd}]
-    │                                    ├─sshd
-    │                                    ├─dockerd───50*[{dockerd}]
-    │                                    ├─kubelet───19*[{kubelet}]
-    │                                    ├─2*[containerd-shim─┬─13*[{containerd-shim}]]
-    │                                    │                    └─pause]
-    │                                    ├─3*[containerd-shim─┬─13*[{containerd-shim}]]
-    │                                    │                    └─pause]
-    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
-    │                                    │                 └─etcd───14*[{etcd}]
-    │                                    ├─containerd-shim─┬─11*[{containerd-shim}]
-    │                                    │                 └─kube-scheduler───8*[{kube-scheduler}]
-    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
-    │                                    │                 └─kube-controller───7*[{kube-controller}]
-    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
-    │                                    │                 └─kube-apiserver───10*[{kube-apiserver}]
-    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
-    │                                    │                 └─pause
-    │                                    ├─containerd-shim─┬─14*[{containerd-shim}]
-    │                                    │                 └─pause
-    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
-    │                                    │                 └─coredns───9*[{coredns}]
-    │                                    ├─containerd-shim─┬─12*[{containerd-shim}]
-    │                                    │                 └─kube-proxy───7*[{kube-proxy}]
-    │                                    └─containerd-shim─┬─12*[{containerd-shim}]
-    │                                                      └─storage-provisi───5*[{storage-provisi}]
+systemd─┬─systemd-journal
+        ├─ ...
+        └─containerd─┬─16*[{containerd}]
+                     └─containerd-shim─┬─10*[{containerd-shim}]
+                                       └─systemd─┬─systemd-journal
+                                                 ├─containerd───19*[{containerd}]
+                                                 ├─sshd
+                                                 ├─dockerd───50*[{dockerd}]
+                                                 ├─kubelet───19*[{kubelet}]
+                                                 ├─2*[containerd-shim─┬─13*[{containerd-shim}]]
+                                                 │                    └─pause]
+                                                 ├─3*[containerd-shim─┬─13*[{containerd-shim}]]
+                                                 │                    └─pause]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─etcd───14*[{etcd}]
+                                                 ├─containerd-shim─┬─11*[{containerd-shim}]
+                                                 │                 └─kube-scheduler───8*[{kube-scheduler}]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─kube-controller───7*[{kube-controller}]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─kube-apiserver───10*[{kube-apiserver}]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─pause
+                                                 ├─containerd-shim─┬─14*[{containerd-shim}]
+                                                 │                 └─pause
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─coredns───9*[{coredns}]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─kube-proxy───7*[{kube-proxy}]
+                                                 └─containerd-shim─┬─12*[{containerd-shim}]
+                                                                   └─storage-provisi───5*[{storage-provisi}]
 
 ```
 We can see that there is one `containerd` process then under it there is a `systemd` process
@@ -156,34 +158,34 @@ Recall from the logs when OOM occurred OOM Killer killed the `systemd` process, 
 systemd─┬─systemd-journal
         ├─ ...
         └─containerd─┬─13*[{containerd}]
-                │    └─containerd-shim─┬─9*[{containerd-shim}]
-                │                      └─systemd─┬─systemd-journal
-                │                                ├─containerd───14*[{containerd}]
-                │                                ├─sshd
-                │                                ├─dockerd───35*[{dockerd}]
-                │                                ├─kubelet───14*[{kubelet}]
-                │                                ├─containerd-shim─┬─14*[{containerd-shim}]
-                │                                │                 └─pause
-                │                                ├─2*[containerd-shim─┬─11*[{containerd-shim}]]
-                │                                │                    └─pause]
-                │                                ├─2*[containerd-shim─┬─12*[{containerd-shim}]]
-                │                                │                    └─pause]
-                │                                ├─containerd-shim─┬─12*[{containerd-shim}]
-                │                                │                 └─etcd───14*[{etcd}]
-                │                                ├─containerd-shim─┬─11*[{containerd-shim}]
-                │                                │                 └─kube-apiserver───9*[{kube-apiserver}]
-                │                                ├─containerd-shim─┬─13*[{containerd-shim}]
-                │                                │                 └─kube-scheduler───9*[{kube-scheduler}]
-                │                                ├─containerd-shim─┬─13*[{containerd-shim}]
-                │                                │                 └─kube-controller───7*[{kube-controller}]
-                │                                ├─containerd-shim─┬─12*[{containerd-shim}]
-                │                                │                 └─pause
-                │                                ├─containerd-shim─┬─13*[{containerd-shim}]
-                │                                │                 └─pause
-                │                                ├─containerd-shim─┬─12*[{containerd-shim}]
-                │                                │                 └─kube-proxy───7*[{kube-proxy}]
-                │                                └─containerd-shim─┬─12*[{containerd-shim}]
-                │                                                  └─coredns───9*[{coredns}]
+                     └─containerd-shim─┬─9*[{containerd-shim}]
+                                       └─systemd─┬─systemd-journal
+                                                 ├─containerd───14*[{containerd}]
+                                                 ├─sshd
+                                                 ├─dockerd───35*[{dockerd}]
+                                                 ├─kubelet───14*[{kubelet}]
+                                                 ├─containerd-shim─┬─14*[{containerd-shim}]
+                                                 │                 └─pause
+                                                 ├─2*[containerd-shim─┬─11*[{containerd-shim}]]
+                                                 │                    └─pause]
+                                                 ├─2*[containerd-shim─┬─12*[{containerd-shim}]]
+                                                 │                    └─pause]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─etcd───14*[{etcd}]
+                                                 ├─containerd-shim─┬─11*[{containerd-shim}]
+                                                 │                 └─kube-apiserver───9*[{kube-apiserver}]
+                                                 ├─containerd-shim─┬─13*[{containerd-shim}]
+                                                 │                 └─kube-scheduler───9*[{kube-scheduler}]
+                                                 ├─containerd-shim─┬─13*[{containerd-shim}]
+                                                 │                 └─kube-controller───7*[{kube-controller}]
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─pause
+                                                 ├─containerd-shim─┬─13*[{containerd-shim}]
+                                                 │                 └─pause
+                                                 ├─containerd-shim─┬─12*[{containerd-shim}]
+                                                 │                 └─kube-proxy───7*[{kube-proxy}]
+                                                 └─containerd-shim─┬─12*[{containerd-shim}]
+                                                                   └─coredns───9*[{coredns}]
 ```
 3. Kill `systemd` process under `containerd-shim` process `$ sudo kill -9 systemd_pid`
 4. Check the system process tree again `$ pstree -n`
