@@ -35,3 +35,10 @@
     {"host":"whoami-deployment-7999bd8c6b-djmxt","ip":"172.17.0.3","time":"2021-01-30T17:24:59.233461683Z"}
     * Connection #0 to host 192.168.49.2 left intact
     ```
+## Access the Service
+- Environment variables
+- DNS
+
+## Expose the Service
+- NodePorts
+- LoadBalancers
